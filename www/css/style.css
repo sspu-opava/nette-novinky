@@ -1,0 +1,69 @@
+body {
+	font-size: 15px;
+	line-height: 1.6;
+	color: #333;
+	background: white;
+}
+
+h1 {
+	color: gray;
+}
+
+#ajax-spinner {
+	margin: 15px 0 0 15px;
+	padding: 13px;
+	background: white url('../images/spinner.gif') no-repeat 50% 50%;
+	font-size: 0;
+	z-index: 123456;
+	display: none;
+}
+
+div.flash {
+	color: black;
+	background: #FFF9D7;
+	border: 1px solid #E2C822;
+	padding: 1em;
+	margin: 1em 0;
+}
+
+a[href^="#error:"] {
+	background: red;
+	color: white;
+}
+
+form th, form td {
+	vertical-align: top;
+	font-weight: normal;
+}
+
+form th {
+	text-align: right;
+}
+
+form .required label {
+	font-weight: bold;
+}
+
+form .error {
+	color: #D00;
+	font-weight: bold;
+}
+
+.navbar-brand img {
+    height: 40px;
+}
+
+.navbar {background-color: yellowgreen;}
+.navbar-default .navbar-nav > li > a, .navbar-default .navbar-brand {color: #f1f1f1;}
+.navbar-default .navbar-nav > li > a:hover, 
+.navbar-default .navbar-nav > li > a:focus {color: #f1f1f1; background-color: #b27677;}
+
+#uvodnik h2 {background-color: #337AB7; text-align: center; text-transform: uppercase; padding: 10px; color: white; font-size: 1.5em;}
+#uvodnik h3 {font-size: 1.2em;}
+.small {font-size: 0.8em;}
+
+@media only screen and (max-width: 766px) {
+.collapsing, .in {background-color: #f7f7f7;}
+.collapsing ul li a, .in ul li a {color: #555!important;}
+.collapsing ul li a:hover, .in ul li a:hover {color: #f1f1f1!important;}
+}

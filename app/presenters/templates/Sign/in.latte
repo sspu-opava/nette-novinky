@@ -1,0 +1,15 @@
+{* Latte template *}
+{block content}
+<div class="container">
+<h1 n:block=title>Přihlášení</h1>
+
+{* control signInForm *}
+
+
+{import '../components/bootstrap-form.latte'}
+{include bootstrap-form signInForm}
+
+
+<p><a n:href="up">Nemáte ještě svůj účet? Zaregistrujte se.</a></p>
+</div>
+{/block}

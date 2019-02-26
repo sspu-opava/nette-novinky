@@ -1,0 +1,39 @@
+{* Latte template *}
+
+{block content}
+<div class="container">
+    <h2>Moje komentáře</h2>
+    <!-- Heading Row -->
+    <div class="row">            
+        <div class="col-xs-12">
+            {foreach $data as $comment}
+                <blockquote>
+                    <h4><a n:href="News:view $comment->news_id">{$comment->ref('news','news_id')->title}</a>, 
+                        <i class="text-muted">{$comment->created_at|date:'%d. %m. %Y, %H:%m'}</i> <span class="caret"></span></h4>
+                    <p>{$comment->content}</p>
+                </blockquote>    
+            {/foreach}    
+        </div>
+    </div>    
+</div>
+{/block}
+
+{block head}
+    {include parent}
+    <style>
+        blockquote p {
+            display: none;
+        }
+    </style>    
+{/block}
+
+{block scripts}
+    {include parent}
+    <script>
+        $(function() {
+            $("span.caret").on("click",function(){
+                $(this).parent().next('p').toggle(500);
+            });
+        })
+    </script>    
+{/block}

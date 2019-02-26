@@ -1,0 +1,95 @@
+{* Latte template *}
+{block title}
+Článek
+{/block}
+
+{block content}
+    <!-- Page Content -->
+    <div class="container">
+        <!-- Heading Row -->
+        <div class="row">            
+            <main class="col-md-8">
+                <article>
+                    <h2>{$data->title}</h2>
+                    <p>{$data->content|noescape}</p>
+                    <div id="stars-default"><input type="hidden" name="rating"/></div>
+                </article>
+                <hr>
+                <h3>Komentáře k článku (celkem: {count($data->related('comments.news_id'))})</h3>
+            {foreach $data->related('comments.news_id') as $comment}
+                <blockquote class="hidden">    
+                    <h4><a href="mailto:{$comment->ref('users','user_id')->email}">{$comment->ref('users','user_id')->name}</a>, 
+                        <i class="text-muted">{$comment->created_at|date:'%d. %m. %Y, %H:%m'}</i></h4>
+                    <p>{$comment->content}</p>
+                    {if in_array('administrator',$user->getRoles())}
+                        <p><a n:href="deleteComment! $data->id,$comment->id">Smazat</a></p>
+                    {/if}   
+                </blockquote>    
+            {/foreach} 
+            {if count($data->related('comments.news_id'))!=0}
+            <p><a href="#" class="btn btn-default" id="all-comments">Zobrazit komentáře</a></p>
+            {/if}
+            {if $user->isLoggedIn()}
+                <div>                    
+                    {control commentForm}
+                </div>
+             {/if}   
+            </main>
+            <aside class="col-md-4"> 
+                {if $author->photo}
+                <p><img src="{$author->photo|dataStream}" class="img-responsive img-circle"></p>
+                {else}
+                <p><img src="{$basePath}/images/person2.jpg" class="img-responsive img-circle"></p>
+                {/if}
+                <h3>{$author->name}</h3>
+                <p>{$author->email}</p>
+                <p>{$author->role}</p>
+            </aside>
+        </div>
+    </div>
+{/block}
+
+{block head}
+    {include parent}
+    <style>
+    </style>    
+{/block}
+
+{block scripts}
+    {include parent}
+    <script src="{$basePath}/js/bootstrap-star-rating.js"></script>
+    <script>
+        var link = {link vote!};
+        var id = {$data->id};
+        $(function() {            
+            $("a#all-comments").on("click",function(){
+                if ($(this).text()=='Zobrazit komentáře') { 
+                    $(this).text('Skrýt komentáře');
+                } else {    
+                    $(this).text('Zobrazit komentáře');
+                }
+                $("blockquote").toggleClass('hidden');
+            });
+            
+       {if in_array('administrator',$user->getRoles())}
+           $("#stars-default").rating('create',{'value': {$data->stars}, onClick:function(){ 
+                $.nette.ajax({
+                    url: link,
+                    type: 'POST',
+                    data: {
+                        id : id,
+                        data : this.attr('data-rating')
+                    },
+                    success: function (payload) {
+                        console.log(data);
+                    }
+                });                                      
+               }
+           });
+       {else}     
+           $("#stars-default").rating('create',{'value': {$data->stars}});
+       {/if}     
+            //$("#stars-default").rating('create',{'coloron':'green',onClick:function(){ alert('rating is ' + this.attr('data-rating')); }});
+        })
+    </script>    
+{/block}

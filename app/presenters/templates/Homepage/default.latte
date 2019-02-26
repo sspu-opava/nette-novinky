@@ -1,0 +1,79 @@
+{* This is the welcome page, you can delete it *}
+{block title}
+Úvodní stránka
+{/block}
+{block content}
+    <!-- Page Content -->
+    <div class="container">
+        <!-- Heading Row -->
+        <div class="row">
+            <div class="col-md-8">
+                <img class="img-responsive img-rounded" src="{$basePath}/images/news.jpg" alt="News">
+            </div>
+            <!-- /.col-md-8 -->
+            <div class="col-md-4">
+                {foreach $latest as $item}
+                <h1>{$item->title|upper}</h1>
+                <a class="btn btn-primary btn-lg" n:href="News:view $item->id">Podrobnosti zde</a>
+                {/foreach}
+            </div>
+            <!-- /.col-md-4 -->
+        </div>
+        <!-- /.row -->
+        <!-- Content Row -->
+        <div class="row" id="uvodnik">
+           {foreach $news as $item}
+            <div class="col-md-4">
+                <h2>{$item->category}</h2>
+                <figure><img src="{$basePath}/images/{$item->category}.jpg" class="img img-responsive img-rounded" alt="{$item->category}"></figure>                    
+                <h3><a n:href="News:view $item->id">{$item->title}</a></h3>
+                <p class="small"><i class="fa fa-calendar-o" aria-hidden="true"></i>
+ <a n:href="News:category $item->category">{$item->category}</a> | {$item->created_at|date:'d.m.Y'}</p>
+                <p>{$item->content|truncate:200|noescape}</p>
+                <a class="btn btn-default" n:href="News:view $item->id">Čti dále</a>
+            </div>
+            {/foreach}                
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <h3 class="text-center bg-primary">Kontaktní formulář</h3>
+            {* control contactForm *}
+            <form n:name=contactForm class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label n:name=name class="col-sm-4 control-label">Jméno</label>
+                    <div class="col-sm-8">
+                        <input n:name=name class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label n:name=email class="col-sm-4 control-label">E-mail</label>
+                    <div class="col-sm-8">
+                        <input n:name=email class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label n:name=message class="col-sm-4 control-label">Zpráva</label>
+                    <div class="col-sm-8">
+                        <textarea n:name=message class="form-control" rows=5></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-8 col-sm-offset-4">
+                        <input n:name=send class="btn btn-primary">
+                    </div>
+                </div>                
+            </form>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; SŠPU Opava 2017</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+{/block}

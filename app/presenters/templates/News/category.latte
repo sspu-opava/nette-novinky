@@ -1,0 +1,55 @@
+{* Latte template *}
+{block content}
+    <!-- Page Content -->
+    <div class="container">
+        <!-- Heading Row -->
+        <h1>{$category|upper}</h1>
+        <div class="row">   
+            <main class="col-md-8">
+                {foreach $data as $article}
+                <article>
+                    <h2><a n:href="News:view $article->id">{$article->title}</a></h2>
+                    <p>{$article->content|truncate:200|noescape}</p>
+                    {var $comments = 0}
+                    {foreach $article->related('comments.news_id') as $comment}
+                        {var $comments += 1}
+                    {/foreach}    
+                    <p><small>Publikováno: <b>{$article->created_at|date:'d.m.Y'}</b>, Autor: <a n:href="author! $article->id" id="dialog-author-init">{$article->ref('users','user_id')->name}</a>, 
+                            Počet komentářů: <a n:href="commentaries! $article->id">{$comments}</a></small></p>
+                </article>
+                {/foreach}
+            </main>
+            <aside class="col-md-">
+                <h2>Přehled článků</h2>
+                {var $activeYear = 0}
+                {foreach $years as $article}
+                    {if $activeYear != $article->year}
+                        {var $activeYear = $article->year}
+                        <h3>{$article->year}</h3>    
+                    {/if}    
+                    <article>
+                        <h4><a n:href="News:view $article->id">{$article->title}</a></h4>
+                    </article>
+                {/foreach}
+            </aside>
+        </div>
+        {snippet show_author}
+            {if $author}
+                <div id="dialog-author" title="Autor článku">
+                    <div>{$author->name}</div>
+                </div>    
+             {/if}
+        {/snippet}    
+
+        {snippet show_commentary}
+            {if $commentaries}
+                {foreach $commentaries as $commentary}                
+                    <div>
+                        <p><small>{$commentary->created_at|date:'d.m.Y'}</small></p>
+                        <p>{$commentary->content}</p>
+                    </div>                
+                {/foreach}
+            {/if}
+        {/snippet}    
+    </div>        
+{/block}
